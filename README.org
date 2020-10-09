@@ -1,0 +1,17 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t broken-links:nil c:nil creator:nil
+#+OPTIONS: d:(not "LOGBOOK") date:nil e:t email:t f:t inline:t num:t
+#+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+OPTIONS: timestamp:t title:t toc:nil todo:t |:t
+
+#+TITLE: Machine Learning
+#+AUTHOR: Gustavo Pacheco, João Barboza and Lucas Resende
+#+EMAIL: 11821ECP011
+#+LANGUAGE: pt_BR
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 26.2 (Org mode 9.1.9)
+
+** [[file:array-processing/][Array Processing]]
+** [[file:interface/][Interface]]
+** [[file:video-io/][Video Input/Output]]
