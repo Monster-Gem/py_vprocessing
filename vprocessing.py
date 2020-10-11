@@ -50,7 +50,7 @@ class Application(tk.Frame):
         self.stream = None
         self.video_panel = None
         self.frame = None
-        self.effect = kernel['identity']
+        self.effect = kernel['Identity']
         self.threshold = 0
         self.blur_detect = True
         self.pack()
@@ -113,11 +113,12 @@ class Application(tk.Frame):
                 image = cv2.cvtColor(image, cv2.COLOR_YCR_CB2RGB)
 
                 if self.blur_detect:
+                    color = (255, 0, 0) if blurry else (0, 0, 255)
                     text = "Blurry ({:.4f})" if blurry else "Not Blurry ({:.4f})"
                     text = text.format(mean)
                     cv2.putText(
                         image, text, (10, 25), cv2.FONT_HERSHEY_TRIPLEX,
-                        0.7, (0, 0, 0), 2)
+                        0.7, color, 2)
 
                 image = ImageTk.PhotoImage(Image.fromarray(image))
                 self.update_image(image)
