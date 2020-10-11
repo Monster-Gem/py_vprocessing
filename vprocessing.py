@@ -36,7 +36,7 @@ class Application(tk.Frame):
         self.stream = None
         self.video_panel = None
         self.frame = None
-        self.effect = 'identity'
+        self.effect = kernel['identity']
         self.pack()
         self.create_widgets()
         self.init_screen()
@@ -57,9 +57,10 @@ class Application(tk.Frame):
                                          state="readonly")
         self.effects_list.pack(side="top", fill=tk.BOTH, expand=1)
         self.effects_list.bind("<<ComboboxSelected>>", self.set_effect)
+        self.effects_list.current(0)
 
     def set_effect(self, event):
-        self.effect = self.effects_list.current()
+        self.effect = kernel.get(list(kernel)[self.effects_list.current()])
 
     def video_loop(self):
         self.stream = cv2.VideoCapture(0)
@@ -93,7 +94,7 @@ class Application(tk.Frame):
 
     def channel_apply_effect(self, i):
         return np.uint8(np.round(convolve(
-            self.frame[:, :, i], kernel[self.effect])))
+            self.frame[:, :, i], self.effect)))
 
     def onClose(self):
         self.stopEvent.set()
