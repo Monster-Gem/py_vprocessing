@@ -9,9 +9,6 @@ import os
 from kernels import kernel
 
 
-# -------------------------INTERFACE------------------------- #
-
-
 # ------------------------CONVOLUTION------------------------ #
 
 
