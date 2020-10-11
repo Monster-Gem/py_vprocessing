@@ -4,6 +4,9 @@
 import cv2
 import numpy as np
 import tkinter as tk
+import tkinter.ttk as ttk
+from PIL import ImageTk, Image
+import threading
 import pyfftw
 import os
 from kernels import kernel
@@ -21,7 +24,7 @@ def convolve(array_a, array_b):
         fft_array_a()*fft_array_b(), threads=os.cpu_count())
     return np.real(ifft())
 
-
+        
 # -------------------------INTERFACE------------------------- #
 
 
@@ -32,7 +35,7 @@ class Application(tk.Frame):
         self.stream = None
         self.video_panel = None
         self.frame = None
-        self.effect = 0
+        self.effect = kernel['identity']
         self.pack()
         self.create_widgets()
         self.init_screen()
@@ -46,32 +49,29 @@ class Application(tk.Frame):
         self.stopEvent = threading.Event()
         self.thread = threading.Thread(target=self.video_loop)
         self.thread.start()
-
+        
     def create_widgets(self):
         self.effects_list = ttk.Combobox(self,
                                          values=list(map(lambda n: n, kernel)),
                                          state="readonly")
         self.effects_list.pack(side="top", fill=tk.BOTH, expand=1)
         self.effects_list.bind("<<ComboboxSelected>>", self.set_effect)
+        self.effects_list.current(0)
 
     def set_effect(self, event):
-        self.effect = self.effects_list.current()
+        self.effect = kernel.get(list(kernel)[self.effects_list.current()])
 
     def video_loop(self):
         self.stream = cv2.VideoCapture(0)
-        start = time.time()
         while not self.stopEvent.is_set():
             ret, self.frame = self.stream.read()
             if ret:
                 self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2YCR_CB)
-                channels_list = []
                 convolve_result = self.channel_apply_effect(0)
                 image = cv2.merge((convolve_result, self.frame[:, :, 1], self.frame[:, :, 2]))
                 image = cv2.cvtColor(image, cv2.COLOR_YCR_CB2RGB)
                 image = ImageTk.PhotoImage(Image.fromarray(image))
                 self.update_image(image)
-                print("FPS...", (1 / (time.time() - start)))
-                start = time.time()
             else:
                 break
         self.stream.release()
@@ -86,9 +86,9 @@ class Application(tk.Frame):
             self.video_panel.configure(image=image)
             self.video_panel.image = image
 
-    def channel_apply_effect(self,i):
+    def channel_apply_effect(self, i):
         return np.uint8(np.round(convolve(
-            self.frame[:, :, i], kernel.get(list(kernel)[self.effect]))))
+            self.frame[:, :, i], self.effect)))
 
     def onClose(self):
         self.stopEvent.set()

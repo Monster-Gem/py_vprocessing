@@ -3,6 +3,7 @@
 *.pdf
 *.tex
 *.csv
+__pycache__/
 
 !README.pdf
 test.py
