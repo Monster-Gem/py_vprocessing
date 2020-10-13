@@ -1,3 +1,7 @@
+# Gustavo Alves Pacheco - 11821ECP011
+# João Barboza Rodrigues - 11811ECP005
+# Lucas Resende Carneiro - 11811ECP009
+
 # --------------------------IMPORTS-------------------------- #
 
 
